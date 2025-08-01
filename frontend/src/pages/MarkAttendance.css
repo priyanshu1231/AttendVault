@@ -1,0 +1,34 @@
+.mark-attendance {
+  padding: 2rem;
+  text-align: center;
+}
+
+.mark-attendance h2 {
+  margin-bottom: 1rem;
+}
+
+.mark-attendance input,
+.mark-attendance select {
+  margin: 0.5rem;
+  padding: 10px;
+  width: 250px;
+  font-size: 16px;
+}
+
+.mark-attendance button {
+  padding: 10px 20px;
+  background-color: #43a047;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.mark-attendance button:hover {
+  background-color: #2e7d32;
+}
+
+.mark-message {
+  margin-top: 1rem;
+  color: #d32f2f;
+}

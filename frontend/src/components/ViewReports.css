@@ -1,0 +1,36 @@
+.view-reports {
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.view-reports h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.view-reports input {
+  margin-bottom: 20px;
+  padding: 8px;
+  width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.view-reports table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.view-reports th,
+.view-reports td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: center;
+}
+
+.view-reports th {
+  background-color: #34495e;
+  color: white;
+}

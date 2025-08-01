@@ -1,0 +1,35 @@
+.remote-attendance {
+  padding: 2rem;
+  text-align: center;
+}
+
+.remote-attendance h2 {
+  margin-bottom: 1rem;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #005f6b;
+}
+
+form {
+  margin-top: 1rem;
+}
+
+input[type="file"] {
+  margin-top: 10px;
+}
+
+.message {
+  margin-top: 1rem;
+  color: green;
+}

@@ -1,0 +1,8 @@
+{
+    "mdb.presetConnections": [
+        {
+            "name": "Attendance Management DB",
+            "connectionString": "mongodb://localhost:27017/attendance_management"
+        }
+    ]
+}

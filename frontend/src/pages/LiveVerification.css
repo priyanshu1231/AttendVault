@@ -1,0 +1,65 @@
+.live-verification-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 12px;
+  background: #f9f9f9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.live-verification-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.live-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.video-box {
+  flex: 1;
+  text-align: center;
+}
+
+.video-box video {
+  width: 100%;
+  max-width: 300px;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+
+.video-box button {
+  margin-top: 10px;
+}
+
+.captured-image img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+}
+
+.location-info {
+  flex-basis: 100%;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.submit-btn {
+  display: block;
+  margin: 30px auto 0;
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #0c8;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}

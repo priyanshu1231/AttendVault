@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Test - Attendance System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .video-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        video {
+            border: 3px solid #007bff;
+            border-radius: 8px;
+            max-width: 100%;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .captured-photo {
+            max-width: 300px;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📷 Camera Test for Attendance System</h1>
+        <p>This page helps test camera functionality for your attendance management system.</p>
+        
+        <div id="status" class="info">
+            Click "Test Camera" to check if your camera is working properly.
+        </div>
+        
+        <div class="video-container">
+            <video id="video" width="400" height="300" autoplay playsinline style="display: none;"></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+        </div>
+        
+        <div style="text-align: center;">
+            <button id="testCamera">📷 Test Camera</button>
+            <button id="capturePhoto" disabled>📸 Capture Photo</button>
+            <button id="stopCamera" disabled>⏹️ Stop Camera</button>
+        </div>
+        
+        <div id="photoResult" style="text-align: center; margin-top: 20px;"></div>
+        
+        <div class="info">
+            <h3>🔧 Troubleshooting Tips:</h3>
+            <ul>
+                <li><strong>Chrome:</strong> Click the 🔒 lock icon in address bar → Camera → Allow</li>
+                <li><strong>Firefox:</strong> Click the 🛡️ shield icon → Allow camera access</li>
+                <li><strong>Edge:</strong> Click the 🔒 lock icon → Camera → Allow</li>
+                <li><strong>Safari:</strong> Safari menu → Preferences → Websites → Camera → Allow</li>
+            </ul>
+            <p><strong>Note:</strong> You may need to refresh the page after changing permissions.</p>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const status = document.getElementById('status');
+        const testCameraBtn = document.getElementById('testCamera');
+        const capturePhotoBtn = document.getElementById('capturePhoto');
+        const stopCameraBtn = document.getElementById('stopCamera');
+        const photoResult = document.getElementById('photoResult');
+        
+        let stream = null;
+
+        function updateStatus(message, type = 'info') {
+            status.className = type;
+            status.innerHTML = message;
+        }
+
+        async function testCamera() {
+            try {
+                updateStatus('📷 Requesting camera access...', 'info');
+                
+                // Check if camera is available
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('Camera API not supported in this browser');
+                }
+
+                // Request camera access
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: { ideal: 640 },
+                        height: { ideal: 480 },
+                        facingMode: 'user'
+                    } 
+                });
+
+                video.srcObject = stream;
+                video.style.display = 'block';
+                
+                video.onloadedmetadata = () => {
+                    video.play();
+                    updateStatus('✅ Camera is working! You can now capture a photo.', 'success');
+                    testCameraBtn.disabled = true;
+                    capturePhotoBtn.disabled = false;
+                    stopCameraBtn.disabled = false;
+                };
+
+            } catch (error) {
+                console.error('Camera error:', error);
+                let errorMessage = '❌ Camera access failed: ';
+                
+                if (error.name === 'NotAllowedError') {
+                    errorMessage += 'Permission denied. Please allow camera access and refresh the page.';
+                } else if (error.name === 'NotFoundError') {
+                    errorMessage += 'No camera found on this device.';
+                } else if (error.name === 'NotReadableError') {
+                    errorMessage += 'Camera is being used by another application.';
+                } else {
+                    errorMessage += error.message;
+                }
+                
+                updateStatus(errorMessage, 'error');
+            }
+        }
+
+        function capturePhoto() {
+            try {
+                const context = canvas.getContext('2d');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                context.drawImage(video, 0, 0);
+                
+                const imageData = canvas.toDataURL('image/jpeg', 0.8);
+                
+                photoResult.innerHTML = `
+                    <h3>📸 Photo Captured Successfully!</h3>
+                    <img src="${imageData}" class="captured-photo" alt="Captured photo">
+                    <p>Photo size: ${imageData.length} characters</p>
+                    <p>✅ Camera is working properly for attendance system!</p>
+                `;
+                
+                updateStatus('✅ Photo captured successfully! Your camera is working properly.', 'success');
+                
+            } catch (error) {
+                console.error('Capture error:', error);
+                updateStatus('❌ Failed to capture photo: ' + error.message, 'error');
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            
+            video.style.display = 'none';
+            video.srcObject = null;
+            photoResult.innerHTML = '';
+            
+            testCameraBtn.disabled = false;
+            capturePhotoBtn.disabled = true;
+            stopCameraBtn.disabled = true;
+            
+            updateStatus('📷 Camera stopped. Click "Test Camera" to try again.', 'info');
+        }
+
+        // Event listeners
+        testCameraBtn.addEventListener('click', testCamera);
+        capturePhotoBtn.addEventListener('click', capturePhoto);
+        stopCameraBtn.addEventListener('click', stopCamera);
+
+        // Check permissions on page load
+        window.addEventListener('load', async () => {
+            if (navigator.permissions) {
+                try {
+                    const permission = await navigator.permissions.query({ name: 'camera' });
+                    console.log('Camera permission status:', permission.state);
+                    
+                    if (permission.state === 'granted') {
+                        updateStatus('✅ Camera permission already granted. Click "Test Camera" to start.', 'success');
+                    } else if (permission.state === 'denied') {
+                        updateStatus('❌ Camera permission denied. Please allow camera access in browser settings.', 'error');
+                    }
+                } catch (error) {
+                    console.log('Permission check not supported');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+.report-container {
+  padding: 2rem;
+}
+
+.report-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.report-table th {
+  background-color: #1976d2;
+  color: white;
+}
